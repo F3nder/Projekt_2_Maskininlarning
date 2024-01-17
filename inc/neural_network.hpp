@@ -37,7 +37,7 @@ namespace machine_learning {
 
     const std::vector<double>& Predict(const std::vector<double> input);
 
-    void PrintPredictions(const std::vector<std::vector<double>> input_sets,
+    void PrintPredictions(const std::vector<std::vector<double>>& input_sets,
                           const std::size_t num_decimals = 0,
                           std::ostream& ostream = std::cout);
 

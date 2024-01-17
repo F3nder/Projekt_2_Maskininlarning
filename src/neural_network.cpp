@@ -1,21 +1,21 @@
 #include <neural_network.hpp>
 #include <utils.hpp>
-namespace {
 
-    template <typename T = int>
-    void Print(const std::vector<T>& data, std::ostream& ostream = std::cout) 
-{
-        static_assert(std::is_arithmetic<T>::value, "Non-arithmetic type selected for method ::Print!");
-        const auto lastElement{&data[data.size() - 1]};
-        ostream << "[";
-        for (const auto& i : data) 
-        {
-            ostream << i;
-            if (&i < lastElement) { ostream << ", "; }
-        }
-        ostream << "]\n";
+namespace {
+    
+// --------------------------------------------------------------------------------
+template <typename T = int>
+void Print(const std::vector<T>& data, std::ostream& ostream = std::cout) {
+    static_assert(std::is_arithmetic<T>::value, 
+        "Non-arithmetic type selected for method ::Print!");
+    ostream << "[";
+    for (const auto& i : data) {
+        ostream << i;
+        if (&i < &data[data.size() - 1]) { ostream << ", "; }
+    }
+    ostream << "]\n";
 }
-}
+} // namespace
 
 namespace yrgo {
 namespace machine_learning {
@@ -66,21 +66,20 @@ namespace machine_learning {
 
 
 //--------------------------------------------------------------------------------
-    void NeuralNetwork::PrintPredictions(const std::vector<std::vector<double>> input_sets,
+    void NeuralNetwork::PrintPredictions(const std::vector<std::vector<double>>& input_sets,
                                          const std::size_t num_decimals,
                                          std::ostream& ostream) {
-
-        if (input_sets.size()) { return; }
+        if (input_sets.size() == 0) { return; }
         ostream << std::fixed << std::setprecision(num_decimals);
-        ostream << "------------------------------------------------------------\n";
+        ostream << "--------------------------------------------------------------------------------";
         for (const auto& input: input_sets) {
             ostream << "\nInput:\t";
             Print<double>(input, ostream);
             ostream << "Output:\t";
             Print<double>(Predict(input), ostream);
         }
-        ostream << "------------------------------------------------------------";        
-    }
+        ostream << "--------------------------------------------------------------------------------\n\n";
+}
 
 
 //--------------------------------------------------------------------------------
