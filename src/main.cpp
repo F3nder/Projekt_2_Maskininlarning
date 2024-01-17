@@ -18,15 +18,13 @@ using namespace yrgo::machine_learning;
  *        prediction, which is printed in the terminal.
  ********************************************************************************/
 int main(void) {
-
     const std::vector<std::vector<double>> train_input{{0, 0}, {0, 1}, {1, 0}, {1, 1}};
     const std::vector<std::vector<double>> train_output{{0}, {1}, {1}, {0}};
 
-    NeuralNetwork network(2, 3, 1, ActFunc::kTanh);
+    NeuralNetwork network{2, 3, 1, ActFunc::kTanh};
     network.AddTrainingData(train_input, train_output);
-    if (network.Train(1000, 0.1)) {
+    if (network.Train(10000, 0.01)) {
         network.PrintPredictions(train_input);
     }
-
     return 0;
 }
