@@ -2,19 +2,14 @@
  * @brief Implementation of dense layers in C++. Later on, this dense layer
  *        implementation will be used to create conventional neural networks.
  ********************************************************************************/
-#include <vector>
+#include <button.hpp>
+#include <led.hpp>
 #include <neural_network.hpp>
+#include <vector>
+#include <algorithm>
 
 using namespace yrgo::machine_learning;
 using namespace yrgo::rpi;
-
-void set_up(void) {
-    led(1);
-    button(3);
-    button(4);
-    button(5);
-    button(6);
-}
 
 /********************************************************************************
  * @brief Creates a neural network trained to predict a 2-bit XOR pattern.
@@ -26,21 +21,53 @@ void set_up(void) {
  *        prediction, which is printed in the terminal.
  ********************************************************************************/
 int main(void) {
-    
-    const std::vector<std::vector<double>> train_input{{0, 0}, {0, 1}, {1, 0}, {1, 1}};
-    const std::vector<std::vector<double>> train_output{{0}, {1}, {1}, {0}};
+    const std::vector<std::vector<double>> train_inputs{
+        {0,0,0,0}, {0,0,0,1}, {0,0,1,0}, {0,0,1,1},
+        {0,1,0,0}, {0,1,0,1}, {0,1,1,0}, {0,1,1,1},
+        
+        {1,0,0,0}, {1,0,0,1}, {1,0,1,0}, {1,0,1,1},
+        {1,1,0,0}, {1,1,0,1}, {1,1,1,0}, {1,1,1,1}
 
-    NeuralNetwork network{2, 3, 1, ActFunc::kTanh};
-    network.AddTrainingData(train_input, train_output);
+    };
+    const std::vector<std::vector<double>> train_outputs{
+        {0}, {1}, {1}, {0},
+        {1}, {0}, {0}, {1},
+
+        {1}, {0}, {0}, {1},
+        {0}, {1}, {1}, {0}
+    };
+
+    NeuralNetwork network(4, 10, 1, ActFunc::kTanh);
+    network.AddTrainingData(train_inputs, train_outputs);
     if (network.Train(10000, 0.01)) {
-        network.PrintPredictions(train_input);
+        network.PrintPredictions(train_inputs);
     }
-    while (1)
+
+    Led Led(17);    
+    Button Button1(22);
+    Button Button2(23);
+    Button Button3(24);
+    Button Button4(25);
+
+    std::vector<double> input{0,0,0,0};
+
+    while(1)
     {
-        if (OddNumberOfButtons() = true) {
-            led(1).on;
+        input[0] = Button1.isPressed() ? 1:0;
+        input[1] = Button2.isPressed() ? 1:0;
+        input[2] = Button3.isPressed() ? 1:0;
+        input[3] = Button4.isPressed() ? 1:0;
+
+        if(std::count(input.begin(), input.end(), 1) %2 !=0)
+        {
+            Led.on();
+        }
+        else 
+        {
+            Led.off();
         }
     }
-    
+
+   
     return 0;
 }

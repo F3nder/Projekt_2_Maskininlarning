@@ -10,4 +10,4 @@ add_executable(run_neural_network ../src/main.cpp
 
 target_compile_options(run_neural_network PRIVATE -Wall -Werror)
 target_link_libraries(run_neural_network gpiod)
-set_target_properties(run_neural_network PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../output)
+set_target_properties(run_neural_network PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../output) 
